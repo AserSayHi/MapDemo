@@ -5,17 +5,17 @@ package view.component
 	import com.astar.basic2d.analyzers.WalkableAnalyzer;
 	import com.astar.core.Astar;
 	import com.astar.core.AstarEvent;
+	import com.astar.core.AstarPath;
 	import com.astar.core.IAstarTile;
 	import com.astar.core.PathRequest;
+	import com.astar.expand.ItemTile;
 	
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
-	import global.AssetsManager;
 	import global.VO;
+	
+	import view.npc.BasicNpc;
 
 	/**
 	 * 逻辑地图层
@@ -23,9 +23,6 @@ package view.component
 	 */	
 	public class TileMap extends Sprite
 	{
-		private var map:Map;
-		private var astar:Astar;
-		private var req:PathRequest;
 		private var dataMap:Array;
 		private var maxH:uint;
 		private var maxV:uint;
@@ -39,42 +36,42 @@ package view.component
 		{
 			//解析xml配置数据
 			parseMapXml();
-			AssetsManager.instance().zipArchive.getAsyncDisplayObject("item.png", function(obj:Bitmap):void{
-				cache = obj.bitmapData;
-				creatItems();
-			});
+			creatMap();
+			initAstar();
 		}
-		private var cache:BitmapData;
-		private function creatItems():void
+		
+		
+		private var astar:Astar;
+		private var req:PathRequest;
+		private function initAstar():void
 		{
-			var tile:BasicTile;
+			//create the Astar instance and add the listeners
+			astar = new Astar();
+			astar.addEventListener(AstarEvent.PATH_FOUND, onPathFound);
+			astar.addEventListener(AstarEvent.PATH_NOT_FOUND, onPathNotFound);
+		}
+		
+		private const positionX:uint = 512;
+		private const positionY:uint = 208;
+		private var map:Map;
+		private function creatMap():void
+		{
+			var tile:ItemTile;
 			var item:ItemRect;
 			map = new Map(maxH, maxV);
 			for(var y:Number = 0; y< maxV; y++)
 			{
 				for(var x:Number = 0; x< maxH; x++)
 				{
-					tile = new BasicTile(1, new Point(x,y), (dataMap[y][x]==0));
+					tile = new ItemTile(1, new Point(x,y), (dataMap[y][x]==0));
 					map.setTile(tile);
-					
-					item = new ItemRect(new Bitmap(cache), tile);
-					item.x = y%2*item.width/2 + x*item.width;
-					item.y = y*item.height/2;
+					item = new ItemRect(tile);
+					item.setPositionText(x, y);
+					item.x = positionX - y*item.width/2 + x*item.width/2;
+					item.y = positionY + y*item.height/2 + x*item.height/2;
 					this.addChild( item );
 				}
 			}
-			
-			//create the Astar instance and add the listeners
-			astar = new Astar();
-			astar.addEventListener(AstarEvent.PATH_FOUND, onPathFound);
-			astar.addEventListener(AstarEvent.PATH_NOT_FOUND, onPathNotFound);
-			
-			//create a new PathRequest
-			//			req = new PathRequest(IAstarTile(map.getTileAt(new Point(0, 0))), IAstarTile(map.getTileAt(new Point(5, 5))), map);
-			
-			//a general analyzer
-			//			astar.addAnalyzer(new WalkableAnalyzer());
-			//			astar.getPath(req);
 		}
 		
 		private function parseMapXml():void
@@ -110,14 +107,60 @@ package view.component
 			trace("path not found");
 		}
 		
-		
+		private var path:AstarPath;
 		private function onPathFound(event : AstarEvent) : void
 		{
 			trace("Path was found: ");
+			path = event.result;
 			for(var i:int = 0; i<event.result.path.length;i++)
 			{
-				trace((event.result.path[i] as BasicTile).getPosition());
+				trace((path.path[i] as ItemTile).getPosition());
 			}
+		}
+		
+		public function getTileByPosition(point:Point):ItemTile
+		{
+			return map.getTileAt(point) as ItemTile;
+		}
+		
+		public function getPath():Vector.<Point>
+		{
+			return null;
+		}
+		
+		public function moveBody(npc:BasicNpc, target:ItemTile):void
+		{
+			if(!target.getWalkable())
+				return;
+			//create a new PathRequest
+			req = new PathRequest(npc.getCrtTile(), target, map);
+			
+			//a general analyzer
+			astar.addAnalyzer(new WalkableAnalyzer());
+			astar.getPath(req);
+		}
+		
+		/**
+		 * 通过坐标找到其相对应tile对象
+		 * @param point
+		 * @return 
+		 */		
+		public function getTargetTileByPosition(point:Point):ItemTile
+		{
+			var p:Point = new Point();
+			var tile:ItemTile;
+			for(var y:int=0;y<maxV;y++)
+			{
+				for(var x:int = 0;x<maxH;x++)
+				{
+					p.x = x;
+					p.y = y;
+					tile = map.getTileAt(p) as ItemTile;
+					if(tile.rect.hitTestPoint(point.x, point.y, true))
+						return tile;
+				}
+			}
+			return null;
 		}
 	}
 }

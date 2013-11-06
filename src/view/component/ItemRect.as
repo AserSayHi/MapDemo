@@ -1,30 +1,55 @@
 package view.component
 {
-	import com.astar.basic2d.BasicTile;
+	import com.astar.expand.ItemTile;
 	
-	import flash.display.Bitmap;
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
+	
+	import global.AssetsManager;
 	
 	public class ItemRect extends Sprite
 	{
-		private var bmp:Bitmap;
-		public function ItemRect(bitmap:Bitmap, tile:BasicTile)
+		private var mc:MovieClip;
+		public function ItemRect(tile:ItemTile)
 		{
 			this.tile = tile;
-			this.bmp = bitmap;
-			this.addChild( bmp );
-			bmp.alpha = .4;
-			bmp.x = -bmp.width >> 1;
-			bmp.y = -bmp.height >>　1;
+			this.tile.rect = this;
+			this.mc = AssetsManager.instance().getResByName("item") as MovieClip;
+			this.addChild( mc );
+			mc.alpha = .4;
+			
+			if(tile.getWalkable())
+				mc.gotoAndStop(1);
+			else
+				mc.gotoAndStop(2);
 			
 			this.graphics.beginFill(0xffffff);
 			this.graphics.drawCircle(0,0,2);
 			this.graphics.endFill();
+			
+			textfield = new TextField();
+			textfield.width = 64;
+			textfield.height = 32;
+			this.addChild( textfield );
+			textfield.visible = false;
+			textfield.x = -32;
+			textfield.y = -16;
+			textfield.mouseEnabled = false;
+			textfield.multiline = false;
+			textfield.defaultTextFormat = new TextFormat(null, null, 0x0000ff, null, null, null, null, null, "center");
 		}
 		
-		private var tile:BasicTile;
+		public function setPositionText(x:int, y:int):void
+		{
+			textfield.text = x + "," + y;
+		}
 		
-		public function getTile():BasicTile
+		private var textfield:TextField;
+		private var tile:ItemTile;
+		
+		public function getTile():ItemTile
 		{
 			return tile;
 		}

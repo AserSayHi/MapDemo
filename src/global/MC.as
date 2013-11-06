@@ -3,7 +3,7 @@ package global
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	
-	import view.MainScreen;
+	import view.screen.MainScreen;
 
 	public class MC
 	{

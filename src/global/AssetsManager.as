@@ -3,7 +3,10 @@ package global
 	import com.riaidea.utils.zip.ZipArchive;
 	import com.riaidea.utils.zip.ZipEvent;
 	
+	import flash.display.DisplayObject;
+	import flash.display.Loader;
 	import flash.display.LoaderInfo;
+	import flash.events.Event;
 
 	public class AssetsManager
 	{
@@ -47,12 +50,26 @@ package global
 //				case ZipEvent.LOADED:
 //					break;
 				case ZipEvent.INIT:
-					onComplete.call();
+					initAssets();
 					break;
 				case ZipEvent.ERROR:
 					break;
 			}
 		}		
+		
+		public var initialized:Boolean = false;
+		private var assets:Loader;
+		private function initAssets():void
+		{
+			assets = new Loader();
+			assets.contentLoaderInfo.addEventListener(Event.COMPLETE, onAsyncBitmap);
+			assets.loadBytes(zipArchive.getFileByName("assets.swf").data);
+			function onAsyncBitmap(evt:Event):void 
+			{
+				initialized = true;
+				onComplete.call();
+			}
+		}
 		
 		public function parse():void
 		{
@@ -61,6 +78,12 @@ package global
 			
 //			var xml:XML = VO.instance().mapXML;
 //			trace(xml.tiles.toString());
+		}
+		
+		public function getResByName(name:String):DisplayObject
+		{
+			var result:Class = assets.contentLoaderInfo.applicationDomain.getDefinition(name) as Class;
+			return new result();
 		}
 	}
 }
