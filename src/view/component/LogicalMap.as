@@ -111,10 +111,6 @@ package view.component
 		private function onPathFound(e : AstarEvent) : void
 		{
 			trace("Path was found: ");
-//			for(var i:int = 0;i<e.result.path.length;i++)
-//			{
-//				trace((e.result.path[i] as ItemTile).getPosition());
-//			}
 			var walker:Walker = vecNpc.shift();
 			walker.startMove(e.result.path);
 		}
@@ -130,6 +126,7 @@ package view.component
 			if(!target.getWalkable() || npc.getCrtTile() == target)
 				return;
 			vecNpc.push( npc );
+			npc.pauseMove();
 			//create a new PathRequest
 			req = new PathRequest(npc.getCrtTile(), target, map);
 			//a general analyzer

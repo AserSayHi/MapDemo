@@ -29,7 +29,6 @@ package view.npc
 			this.path = path;
 			this.path.splice(0,1);
 			action.gotoAndStop( ACTION_MOVE );
-			
 			if(!timer)
 				creatTimer();
 			timer.start();
@@ -48,8 +47,6 @@ package view.npc
 			var tile:ItemTile = path[0] as ItemTile;
 			const X:int = tile.rect.x;
 			const Y:int = tile.rect.y;
-//			var r:Number = Math.atan2(Y-y, X-x)/* * Math.PI/180*/;
-//			trace(r);
 			vx = X - crtTile.rect.x >> 1;
 			vy = Y - crtTile.rect.y >> 1;
 			this.x += vx;
@@ -62,6 +59,16 @@ package view.npc
 					timer.reset();
 					action.gotoAndStop(ACTION_STAY);
 				}
+			}
+		}
+		
+		public function pauseMove():void
+		{
+			if(this.path)
+			{
+				timer.reset();
+				if(!(crtTile.rect.x == x &&　crtTile.rect.y == y))
+					this.setCrtTile(this.path[0] as ItemTile);
 			}
 		}
 	}
