@@ -8,8 +8,8 @@ package view.screen
 	
 	import global.AssetsManager;
 	
-	import view.component.TileMap;
-	import view.npc.BasicNpc;
+	import view.component.LogicalMap;
+	import view.npc.Walker;
 
 	/**
 	 * 主场景
@@ -20,22 +20,28 @@ package view.screen
 		private var bg:Sprite;
 		public function MainScreen()
 		{
-			bg = AssetsManager.instance().getResByName("background") as Sprite;
-			this.addChild( bg );
 			init();
 		}
 		
 		/**
 		 * 地图逻辑格
 		 */		
-		private var tileMap:TileMap;
+		private var tileMap:LogicalMap;
+		private var role:Walker;
 		
 		private function init():void
 		{
-			tileMap = new TileMap();
+			bg = AssetsManager.instance().getResByName("background") as Sprite;
+			this.addChild( bg );
+			bg.mouseEnabled = false;
+			
+			tileMap = new LogicalMap();
 			this.addChild( tileMap );
 //			tileMap.visible = false;
-			initRole();
+			//creat role
+			role = new Walker();
+			this.addChild( role );
+			role.setCrtTile( tileMap.getTileByPosition(new Point(0,0)) );
 			
 			this.addEventListener(MouseEvent.CLICK, onClick);
 		}
@@ -46,17 +52,8 @@ package view.screen
 			mouse = new Point(stage.mouseX, stage.mouseY);
 			if(!tileMap.hitTestPoint(mouse.x, mouse.y, true))		//点击为行走区域外
 				return;
-			trace("hit");
 			var target:ItemTile = tileMap.getTargetTileByPosition(mouse);
 			tileMap.moveBody(role, target);
-		}
-		
-		private var role:BasicNpc;
-		private function initRole():void
-		{
-			role = new BasicNpc();
-			this.addChild( role );
-			role.setCrtTile( tileMap.getTileByPosition(new Point(0,0)) );
 		}
 	}
 }

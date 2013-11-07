@@ -11,6 +11,9 @@ package view.component
 	
 	public class ItemRect extends Sprite
 	{
+		public static const ITEM_WIDTH:uint = 64;
+		public static const ITEM_HEIGHT:uint = 32;
+		
 		private var mc:MovieClip;
 		public function ItemRect(tile:ItemTile)
 		{
@@ -33,7 +36,7 @@ package view.component
 			textfield.width = 64;
 			textfield.height = 32;
 			this.addChild( textfield );
-			textfield.visible = false;
+//			textfield.visible = false;
 			textfield.x = -32;
 			textfield.y = -16;
 			textfield.mouseEnabled = false;

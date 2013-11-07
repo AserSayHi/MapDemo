@@ -15,14 +15,18 @@ package view.npc
 	 */	
 	public class BasicNpc extends Sprite
 	{
+		/**交互事件*/		
 		public static const INTERACTIVED:String = "interactived";
+		/**动作帧索引*/		
+		public static const ACTION_STAY:int = 1;
+		public static const ACTION_MOVE:int = 2;
 		
 		protected var action:MovieClip;
 		
 		public function BasicNpc()
 		{
 			action = AssetsManager.instance().getResByName("role") as MovieClip;
-			action.gotoAndStop(1);
+			action.gotoAndStop(ACTION_STAY);
 			this.addChild( action );
 			
 			this.addEventListener(MouseEvent.CLICK, onClick);
