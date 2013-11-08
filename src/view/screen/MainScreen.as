@@ -53,7 +53,8 @@ package view.screen
 			if(!tileMap.hitTestPoint(mouse.x, mouse.y, true))		//点击为行走区域外
 				return;
 			var target:ItemTile = tileMap.getTargetTileByPosition(mouse);
-			tileMap.moveBody(role, target);
+			if(target)
+				tileMap.moveBody(role, target);
 		}
 	}
 }

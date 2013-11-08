@@ -22,6 +22,7 @@ THE SOFTWARE.
 
 package com.astar.basic2d.analyzers
 {
+	import com.astar.basic2d.BasicTile;
 	import com.astar.basic2d.IPositionTile;
 	import com.astar.core.Analyzer;
 	import com.astar.core.IAstarTile;
@@ -50,7 +51,8 @@ package com.astar.basic2d.analyzers
 				var currentTile : IPositionTile = neighboursLeft[i] as IPositionTile;
 				
 				//only allow horizontal and vertical movement
-				if(currentTile.getPosition().x == main.getPosition().x || currentTile.getPosition().y == main.getPosition().y) newLeft.push(currentTile);
+				if((currentTile.getPosition().x == main.getPosition().x || currentTile.getPosition().y == main.getPosition().y) && (currentTile as BasicTile).getWalkable())
+					newLeft.push(currentTile);
 			}
 			return newLeft;
 		}

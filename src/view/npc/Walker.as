@@ -71,5 +71,15 @@ package view.npc
 					this.setCrtTile(this.path[0] as ItemTile);
 			}
 		}
+		
+		/**
+		 * @return 
+		 */		
+		public function isCrtPathTarget(tile:IAstarTile):Boolean
+		{
+			if(path && path.length>0 && tile == path[path.length-1])
+				return true
+			return false;
+		}
 	}
 }

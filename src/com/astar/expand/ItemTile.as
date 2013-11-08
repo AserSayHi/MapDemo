@@ -4,24 +4,24 @@ package com.astar.expand
 	
 	import flash.geom.Point;
 	
-	import view.component.ItemRect;
+	import view.component.LogicalRect;
 	
 	public class ItemTile extends BasicTile
 	{
-		private var _rect:ItemRect;
+		private var _rect:LogicalRect;
 		public function ItemTile(cost:Number, position:Point, walkable:Boolean)
 		{
 			super(cost, position, walkable);
 		}
 		
-		public function set rect(item:ItemRect):void
+		public function set rect(item:LogicalRect):void
 		{
 			if(_rect && _rect == item)
 				return;
 			_rect = item;
 		}
 		
-		public function get rect():ItemRect
+		public function get rect():LogicalRect
 		{
 			return _rect;
 		}

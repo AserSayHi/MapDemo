@@ -1,6 +1,7 @@
 package view.component
 {
 	import com.astar.basic2d.Map;
+	import com.astar.basic2d.analyzers.FullClippingAnalyzer;
 	import com.astar.basic2d.analyzers.WalkableAnalyzer;
 	import com.astar.core.Astar;
 	import com.astar.core.AstarEvent;
@@ -45,6 +46,7 @@ package view.component
 		{
 			//create the Astar instance and add the listeners
 			astar = new Astar();
+			astar.addAnalyzer(new FullClippingAnalyzer());
 			astar.addEventListener(AstarEvent.PATH_FOUND, onPathFound);
 			astar.addEventListener(AstarEvent.PATH_NOT_FOUND, onPathNotFound);
 		}
@@ -55,17 +57,19 @@ package view.component
 		private function creatMap():void
 		{
 			var tile:ItemTile;
-			var item:ItemRect;
-			const w:uint = ItemRect.ITEM_WIDTH;
-			const h:uint = ItemRect.ITEM_HEIGHT;
+			var item:LogicalRect;
+			const w:uint = LogicalRect.ITEM_WIDTH;
+			const h:uint = LogicalRect.ITEM_HEIGHT;
 			map = new Map(maxH, maxV);
+			map.heuristic = Map.MANHATTAN_HEURISTIC;
+			
 			for(var y:Number = 0; y< maxV; y++)
 			{
 				for(var x:Number = 0; x< maxH; x++)
 				{
 					tile = new ItemTile(1, new Point(x,y), (dataMap[y][x]==0));
 					map.setTile(tile);
-					item = new ItemRect(tile);
+					item = new LogicalRect(tile);
 					item.setPositionText(x, y);
 					item.x = positionX - y*w/2 + x*w/2;
 					item.y = positionY + y*h/2 + x*h/2;
@@ -111,6 +115,10 @@ package view.component
 		private function onPathFound(e : AstarEvent) : void
 		{
 			trace("Path was found: ");
+			for(var i:int = 0;i<e.result.path.length;i++)
+			{
+				trace((e.result.path[i] as ItemTile).getPosition());
+			}
 			var walker:Walker = vecNpc.shift();
 			walker.startMove(e.result.path);
 		}
@@ -123,14 +131,13 @@ package view.component
 		private var vecNpc:Vector.<Walker>;
 		public function moveBody(npc:Walker, target:ItemTile):void
 		{
-			if(!target.getWalkable() || npc.getCrtTile() == target)
+			if(!target.getWalkable() || npc.getCrtTile() == target || npc.isCrtPathTarget(target))
 				return;
 			vecNpc.push( npc );
 			npc.pauseMove();
 			//create a new PathRequest
 			req = new PathRequest(npc.getCrtTile(), target, map);
 			//a general analyzer
-			astar.addAnalyzer(new WalkableAnalyzer());
 			astar.getPath(req);
 		}
 		
@@ -141,8 +148,8 @@ package view.component
 		 */		
 		public function getTargetTileByPosition(point:Point):ItemTile
 		{
-			var w:uint = ItemRect.ITEM_WIDTH;
-			var h:uint = ItemRect.ITEM_HEIGHT;
+			var w:uint = LogicalRect.ITEM_WIDTH;
+			var h:uint = LogicalRect.ITEM_HEIGHT;
 			
 			var tx:Number = (point.y - positionY)/h + (point.x - positionX)/w;
 			var ty:Number = (positionX + tx*w/2 - point.x)*2/w;
