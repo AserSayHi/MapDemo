@@ -9,7 +9,7 @@ package view.screen
 	import global.AssetsManager;
 	
 	import view.component.LogicalMap;
-	import view.npc.Walker;
+	import view.unit.Walker;
 
 	/**
 	 * 主场景
@@ -27,24 +27,41 @@ package view.screen
 		 * 地图逻辑格
 		 */		
 		private var tileMap:LogicalMap;
-		private var role:Walker;
 		
 		private function init():void
 		{
+			initMapLayer();
+			initUnitViewLayer();
+		}
+		
+		private function initMapLayer():void
+		{
 			bg = AssetsManager.instance().getResByName("background") as Sprite;
 			this.addChild( bg );
-			bg.mouseEnabled = false;
-			
+			bg.addEventListener(MouseEvent.CLICK, onClick);
 			tileMap = new LogicalMap();
 			this.addChild( tileMap );
-//			tileMap.visible = false;
-			//creat role
-			role = new Walker();
-			this.addChild( role );
-			role.setCrtTile( tileMap.getTileByPosition(new Point(0,0)) );
-			
-			this.addEventListener(MouseEvent.CLICK, onClick);
+			tileMap.visible = false;
+			tileMap.mouseEnabled = tileMap.mouseChildren = false;
 		}
+		
+		private var container:Sprite;
+		private var role:Walker;
+		private function initUnitViewLayer():void
+		{
+			container = new Sprite();
+			this.addChild( container );
+			
+			//货架
+			shelf = new ShelfManager();
+			shelf.creatShelf(container, tileMap);
+			
+			role = new Walker();
+			container.addChild( role );
+			role.setCrtTile( tileMap.getTileByPosition(new Point(0,0)) );
+		}
+		
+		private var shelf:ShelfManager;
 		
 		private var mouse:Point;
 		protected function onClick(event:MouseEvent):void
@@ -52,9 +69,11 @@ package view.screen
 			mouse = new Point(stage.mouseX, stage.mouseY);
 			if(!tileMap.hitTestPoint(mouse.x, mouse.y, true))		//点击为行走区域外
 				return;
-			var target:ItemTile = tileMap.getTargetTileByPosition(mouse);
+			var target:ItemTile = tileMap.getTileByMousePlace(mouse);
 			if(target)
 				tileMap.moveBody(role, target);
 		}
+		
+		
 	}
 }

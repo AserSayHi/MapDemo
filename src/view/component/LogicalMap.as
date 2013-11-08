@@ -2,7 +2,6 @@ package view.component
 {
 	import com.astar.basic2d.Map;
 	import com.astar.basic2d.analyzers.FullClippingAnalyzer;
-	import com.astar.basic2d.analyzers.WalkableAnalyzer;
 	import com.astar.core.Astar;
 	import com.astar.core.AstarEvent;
 	import com.astar.core.PathRequest;
@@ -13,7 +12,7 @@ package view.component
 	
 	import global.VO;
 	
-	import view.npc.Walker;
+	import view.unit.Walker;
 
 	/**
 	 * 逻辑地图层
@@ -122,7 +121,12 @@ package view.component
 			var walker:Walker = vecNpc.shift();
 			walker.startMove(e.result.path);
 		}
-		
+		/**
+		 * 通过行列位置查找tile
+		 * @param point
+		 * @return 
+		 * 
+		 */		
 		public function getTileByPosition(point:Point):ItemTile
 		{
 			return map.getTileAt(point) as ItemTile;
@@ -131,7 +135,7 @@ package view.component
 		private var vecNpc:Vector.<Walker>;
 		public function moveBody(npc:Walker, target:ItemTile):void
 		{
-			if(!target.getWalkable() || npc.getCrtTile() == target || npc.isCrtPathTarget(target))
+			if(!target.getWalkable() || npc.getCrtTile() == target || npc.isCrtPathEnd(target))
 				return;
 			vecNpc.push( npc );
 			npc.pauseMove();
@@ -146,7 +150,7 @@ package view.component
 		 * @param point
 		 * @return 
 		 */		
-		public function getTargetTileByPosition(point:Point):ItemTile
+		public function getTileByMousePlace(point:Point):ItemTile
 		{
 			var w:uint = LogicalRect.ITEM_WIDTH;
 			var h:uint = LogicalRect.ITEM_HEIGHT;
