@@ -24,7 +24,7 @@ package view.unit
 		override protected function init():void
 		{
 			action = AssetsManager.instance().getResByName("shelf") as MovieClip;
-			action.gotoAndStop(ACTION_STAY_LEFT_DOWN);
+			action.gotoAndStop(ACTION_STAY_LEFT);
 			this.addChild( action );
 		}
 		

@@ -1,9 +1,12 @@
 package
 {
 	import flash.display.Sprite;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
 	
 	import global.AssetsManager;
 	import global.MC;
+
 	[SWF(width="1024", height="768", frameRate="30", backgroundColor="0x333333")]
 	public class GameDemo extends Sprite
 	{
@@ -11,6 +14,9 @@ package
 		
 		public function GameDemo()
 		{
+			stage.align = StageAlign.TOP_LEFT;
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			
 			init();
 		}
 		private function init():void

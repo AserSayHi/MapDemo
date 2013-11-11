@@ -31,7 +31,7 @@ package view.screen
 		private function init():void
 		{
 			initMapLayer();
-			initUnitViewLayer();
+//			initUnitViewLayer();
 		}
 		
 		private function initMapLayer():void
@@ -41,7 +41,7 @@ package view.screen
 			bg.addEventListener(MouseEvent.CLICK, onClick);
 			tileMap = new LogicalMap();
 			this.addChild( tileMap );
-			tileMap.visible = false;
+//			tileMap.visible = false;
 			tileMap.mouseEnabled = tileMap.mouseChildren = false;
 		}
 		
@@ -58,7 +58,7 @@ package view.screen
 			
 			role = new Walker();
 			container.addChild( role );
-			role.setCrtTile( tileMap.getTileByPosition(new Point(0,0)) );
+			role.setCrtTile( tileMap.getTileByPosition(new Point(3,4)) );
 		}
 		
 		private var shelf:ShelfManager;

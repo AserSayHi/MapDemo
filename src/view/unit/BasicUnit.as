@@ -14,14 +14,14 @@ package view.unit
 		/**交互事件*/		
 		public static const INTERACTIVED:String = "interactived";
 		/**动作帧索引*/		
-		public static const ACTION_STAY_LEFT_UP:int = 1;
-		public static const ACTION_STAY_LEFT_DOWN:int = 2;
-		public static const ACTION_STAY_RIGHT_UP:int = 3;
-		public static const ACTION_STAY_RIGHT_DOWN:int = 4;
-		public static const ACTION_MOVE_LEFT_UP:int = 5;
-		public static const ACTION_MOVE_LEFT_DOWN:int = 6;
-		public static const ACTION_MOVE_RIGHT_UP:int = 7;
-		public static const ACTION_MOVE_RIGHT_DOWN:int = 8;
+		public static const ACTION_STAY_UP:int = 1;
+		public static const ACTION_STAY_DOWN:int = 2;
+		public static const ACTION_STAY_LEFT:int = 3;
+		public static const ACTION_STAY_RIGHT:int = 4;
+		public static const ACTION_MOVE_UP:int = 5;
+		public static const ACTION_MOVE_DOWN:int = 6;
+		public static const ACTION_MOVE_LEFT:int = 7;
+		public static const ACTION_MOVE_RIGHT:int = 8;
 		
 		protected var action:MovieClip;
 		

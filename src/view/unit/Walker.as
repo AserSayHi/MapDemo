@@ -29,7 +29,7 @@ package view.unit
 		override protected function init():void
 		{
 			action = AssetsManager.instance().getResByName("role") as MovieClip;
-			action.gotoAndStop(ACTION_STAY_LEFT_DOWN);
+			action.gotoAndStop(ACTION_STAY_RIGHT);
 			this.addChild( action );
 		}
 		
@@ -41,8 +41,9 @@ package view.unit
 		 */		
 		public function startMove(path:Vector.<IAstarTile>):void
 		{
-			this.path = path;
-			this.path.splice(0,1);
+			if(!this.path)	this.path = new Vector.<IAstarTile>();
+			path.splice(0,1);
+			this.path = this.path.concat(path);
 			if(!timer)
 				creatTimer();
 			timer.start();
@@ -77,13 +78,13 @@ package view.unit
 				if(tp.y > cp.y)
 					direction = 2;
 				else
-					direction = 3;
+					direction = 1;
 			}else if(tp.y == cp.y)
 			{
 				if(tp.x > cp.x)
 					direction = 4;
 				else
-					direction = 1;
+					direction = 3;
 			}
 			if(action.currentFrame != direction+4)
 				action.gotoAndStop( 4+direction );
@@ -100,7 +101,7 @@ package view.unit
 				this.crtTile = path.shift() as ItemTile;
 				if(path.length == 0)
 				{
-					timer.reset();
+					timer.stop();
 					action.gotoAndStop(direction);
 				}
 			}
@@ -111,13 +112,23 @@ package view.unit
 			return crtTile;
 		}
 		
-		public function pauseMove():void
+		public function pause():void
 		{
 			if(this.path)
 			{
-				timer.reset();
-				if(!(crtTile.rect.x == x &&　crtTile.rect.y == y))
-					this.setCrtTile(this.path[0] as ItemTile);
+//				timer.stop();
+				if(path.length > 2)
+				{
+					path.splice(2, -1);
+				}
+//				if(crtTile.rect.x == x &&　crtTile.rect.y == y)
+//				{
+//					path.splice(0, path.length);
+//				}
+//				else
+//				{
+//					path.splice(1, path.length-1);
+//				}
 			}
 		}
 		
@@ -129,6 +140,13 @@ package view.unit
 			if(path && path.length>0 && tile == path[path.length-1])
 				return true
 			return false;
+		}
+		
+		public function getCrtPathEnd():IAstarTile
+		{
+			if(path && path.length > 0)
+				return path[path.length-1];
+			return crtTile;
 		}
 	}
 }

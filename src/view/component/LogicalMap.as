@@ -50,8 +50,8 @@ package view.component
 			astar.addEventListener(AstarEvent.PATH_NOT_FOUND, onPathNotFound);
 		}
 		
-		private const positionX:uint = 512;
-		private const positionY:uint = 208;
+//		private const positionX:uint = 32;
+//		private const positionY:uint = 32;
 		private var map:Map;
 		private function creatMap():void
 		{
@@ -70,8 +70,10 @@ package view.component
 					map.setTile(tile);
 					item = new LogicalRect(tile);
 					item.setPositionText(x, y);
-					item.x = positionX - y*w/2 + x*w/2;
-					item.y = positionY + y*h/2 + x*h/2;
+//					item.x = positionX - y*w/2 + x*w/2;
+//					item.y = positionY + y*h/2 + x*h/2;
+					item.x = w/2 + x*w;
+					item.y = h/2 + y*h;
 					this.addChild( item );
 				}
 			}
@@ -100,9 +102,10 @@ package view.component
 					arr.push(uint(char));
 				}
 			}
+			dataMap.push( arr );
 			maxH = arr.length;
 			maxV = dataMap.length;
-			dataMap.push( arr );
+			trace(maxH, maxV);
 		}
 		
 		private function onPathNotFound(event : AstarEvent) : void
@@ -114,10 +117,10 @@ package view.component
 		private function onPathFound(e : AstarEvent) : void
 		{
 			trace("Path was found: ");
-			for(var i:int = 0;i<e.result.path.length;i++)
-			{
-				trace((e.result.path[i] as ItemTile).getPosition());
-			}
+//			for(var i:int = 0;i<e.result.path.length;i++)
+//			{
+//				trace((e.result.path[i] as ItemTile).getPosition());
+//			}
 			var walker:Walker = vecNpc.shift();
 			walker.startMove(e.result.path);
 		}
@@ -138,9 +141,9 @@ package view.component
 			if(!target.getWalkable() || npc.getCrtTile() == target || npc.isCrtPathEnd(target))
 				return;
 			vecNpc.push( npc );
-			npc.pauseMove();
+			npc.pause();
 			//create a new PathRequest
-			req = new PathRequest(npc.getCrtTile(), target, map);
+			req = new PathRequest(npc.getCrtPathEnd(), target, map);
 			//a general analyzer
 			astar.getPath(req);
 		}
@@ -154,9 +157,10 @@ package view.component
 		{
 			var w:uint = LogicalRect.ITEM_WIDTH;
 			var h:uint = LogicalRect.ITEM_HEIGHT;
-			
-			var tx:Number = (point.y - positionY)/h + (point.x - positionX)/w;
-			var ty:Number = (positionX + tx*w/2 - point.x)*2/w;
+//			var tx:Number = (point.y - positionY)/h + (point.x - positionX)/w;
+//			var ty:Number = (positionX + tx*w/2 - point.x)*2/w;
+			var tx:int = point.x / w;
+			var ty:int = point.y / h;
 			var p:Point = new Point(Math.round(tx), Math.round(ty));
 			return map.getTileAt(p) as ItemTile;
 		}
