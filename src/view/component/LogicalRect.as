@@ -21,12 +21,12 @@ package view.component
 			this.tile.rect = this;
 			this.mc = AssetsManager.instance().getResByName("item") as MovieClip;
 			this.addChild( mc );
-//			mc.alpha = .4;
+			mc.alpha = .4;
 			
 			if(tile.getWalkable())
 				mc.gotoAndStop(1);
 			else
-				mc.gotoAndStop(1);
+				mc.gotoAndStop(2);
 			
 			this.graphics.beginFill(0xffffff);
 			this.graphics.drawCircle(0,0,2);

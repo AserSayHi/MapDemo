@@ -31,7 +31,7 @@ package view.screen
 		private function init():void
 		{
 			initMapLayer();
-//			initUnitViewLayer();
+			initUnitViewLayer();
 		}
 		
 		private function initMapLayer():void
