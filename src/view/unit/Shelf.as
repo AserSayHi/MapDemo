@@ -1,7 +1,5 @@
 package view.unit
 {
-	import com.astar.expand.ItemTile;
-	
 	import flash.display.MovieClip;
 	
 	import global.AssetsManager;
@@ -15,25 +13,17 @@ package view.unit
 		 */		
 		public function Shelf(vo:ShelfVO)
 		{
-			super();
 			this.vo = vo;
+			super();
 		}
 		
 		private var vo:ShelfVO;
 		
 		override protected function init():void
 		{
-			action = AssetsManager.instance().getResByName("shelf") as MovieClip;
-			action.gotoAndStop(ACTION_STAY_LEFT);
+			action = AssetsManager.instance().getResByName("shelf_"+vo.getIcon()) as MovieClip;
 			this.addChild( action );
 		}
 		
-		protected var pathEnd:ItemTile;
-		public function setPathEndTile(tile:ItemTile):void
-		{
-			if(pathEnd && pathEnd == tile)
-				return;
-			pathEnd = tile;
-		}
 	}
 }

@@ -23,28 +23,20 @@ package view.screen
 		
 		private function init():void
 		{
-			parseShelfVO();
+			parseXML();
 		}
 		
 		private var datas:Vector.<ShelfVO>;
-		private function parseShelfVO():void
+		private function parseXML():void
 		{
-			var str:String;
-			var arr:Array
-			var p1:Point;
-			var p2:Point;
 			var xml:XMLList = VO.instance().mapXML.shelf;
 			datas = new Vector.<ShelfVO>();
 			for(var i:int = 1;i<int.MAX_VALUE;i++)
 			{
 				if(!xml.hasOwnProperty("s"+i))
 					break;
-				str = xml["s"+i].toString();
-				arr = str.split("|")[0].split(",");
-				p1 = new Point(arr[0], arr[1]);
-				arr = str.split("|")[1].split(",");
-				p2 = new Point( arr[0], arr[1] );
-				var vo:ShelfVO = new ShelfVO(p1, p2);
+				var vo:ShelfVO = new ShelfVO(i.toString());
+				vo.parseByXmlContent(xml["s"+i].toString());
 				datas.push( vo );
 			}
 		}
@@ -64,7 +56,6 @@ package view.screen
 				vo = datas[i];
 				shelf = new Shelf(vo);
 				shelf.setCrtTile( map.getTileByPosition( vo.getPosition() ) );
-				shelf.setPathEndTile( map.getTileByPosition( vo.getTarget() ) );
 				shelf.addEventListener(MouseEvent.CLICK, onClick);
 				vecShelf[i] = shelf;
 			}

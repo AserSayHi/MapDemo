@@ -53,19 +53,22 @@ package view.screen
 			this.addChild( container );
 			
 			//货架
-			shelf = new ShelfManager();
-			shelf.creatShelf(container, tileMap);
+			shelfManager = new ShelfManager();
+			shelfManager.creatShelf(container, tileMap);
 			
-			role = new Walker();
-			container.addChild( role );
-			role.setCrtTile( tileMap.getTileByPosition(new Point(3,4)) );
+//			role = new Walker();
+//			container.addChild( role );
+//			role.setCrtTile( tileMap.getTileByPosition(new Point(3,4)) );
 		}
 		
-		private var shelf:ShelfManager;
+		private var shelfManager:ShelfManager;
+		private var workerManager:WorkerManager;
+		private var shopperManager:ShopperManager;
 		
 		private var mouse:Point;
 		protected function onClick(event:MouseEvent):void
 		{
+			return;
 			mouse = new Point(stage.mouseX, stage.mouseY);
 			if(!tileMap.hitTestPoint(mouse.x, mouse.y, true))		//点击为行走区域外
 				return;
