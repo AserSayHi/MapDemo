@@ -1,13 +1,10 @@
-package view.screen
+package global
 {
 	import flash.display.Sprite;
-	import flash.events.MouseEvent;
-	import flash.geom.Point;
 	
-	import global.VO;
+	import model.ShelfVO;
 	
 	import view.component.LogicalMap;
-	import view.model.ShelfVO;
 	import view.unit.Shelf;
 
 	/**
@@ -44,19 +41,18 @@ package view.screen
 		private var container:Sprite;
 		private var map:LogicalMap;
 		private var vecShelf:Array;
-		public function creatShelf(container:Sprite, tileMap:LogicalMap):void
+		public function creatShelf(container:Sprite):void
 		{
 			vecShelf = [];
 			this.container = container;
-			this.map = tileMap;
+			this.map = LogicalMap.getInstance();
 			var shelf:Shelf;
 			var vo:ShelfVO;
 			for(var i:int = datas.length-1;i>=0;i--)
 			{
 				vo = datas[i];
 				shelf = new Shelf(vo);
-				shelf.setCrtTile( map.getTileByPosition( vo.getPosition() ) );
-				shelf.addEventListener(MouseEvent.CLICK, onClick);
+				shelf.setCrtTile( map.getTileByPosition( vo.position ) );
 				vecShelf[i] = shelf;
 			}
 			
@@ -67,8 +63,12 @@ package view.screen
 			}
 		}
 		
-		protected function onClick(e:MouseEvent):void
+		private static var _instance:ShelfManager;
+		public static function getInstance():ShelfManager
 		{
+			if(!_instance)
+				_instance = new ShelfManager();
+			return _instance;
 		}
 	}
 }

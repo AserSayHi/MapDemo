@@ -75,9 +75,7 @@ package global
 		{
 			VO.instance().mapXML = new XML( zipArchive.getFileByName("map.xml").data );
 			VO.instance().sampleXML = new XML( zipArchive.getFileByName("sample.xml").data );
-			
-//			var xml:XML = VO.instance().mapXML;
-//			trace(xml.tiles.toString());
+			VO.instance().propXML = new XML( zipArchive.getFileByName("prop.xml").data );
 		}
 		
 		public function getResByName(name:String):DisplayObject

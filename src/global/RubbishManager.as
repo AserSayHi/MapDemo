@@ -1,4 +1,4 @@
-package view.screen
+package global
 {
 	public class RubbishManager
 	{

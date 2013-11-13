@@ -1,4 +1,4 @@
-package view.model
+package model
 {
 	import flash.geom.Point;
 
@@ -13,27 +13,27 @@ package view.model
 			this.id = id;
 		}
 		
-		private var id:String;
+		public var id:String;
 		/**
 		 * 所在位置行列
 		 */		
-		private var position:Point;
+		public var position:Point;
 		/**
 		 * 响应目标行列集合
 		 */		
-		private var target:Vector.<Point>;
+		public var target:Vector.<Point>;
 		/**
 		 * 资源索引
 		 */		
-		private var icon:String;
+		public var icon:String;
 		/**
 		 * 搁板数量
 		 */		
-		private var count:uint;
+		public var count:uint;
 		/**
 		 * 单个搁板容量
 		 */		
-		private var volume:uint;
+		public var volume:uint;
 		
 		public function parseByXmlContent(str:String):void
 		{
@@ -59,14 +59,5 @@ package view.model
 			}
 		}
 		
-		public function getPosition():Point
-		{
-			return position;
-		}
-		
-		public function getIcon():String
-		{
-			return icon;
-		}
 	}
 }

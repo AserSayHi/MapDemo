@@ -1,12 +1,12 @@
 package view.screen
 {
-	import com.astar.expand.ItemTile;
-	
 	import flash.display.Sprite;
-	import flash.events.MouseEvent;
-	import flash.geom.Point;
 	
 	import global.AssetsManager;
+	import global.ShelfManager;
+	import global.ShopperManager;
+	import global.StoreManager;
+	import global.WorkerManager;
 	
 	import view.component.LogicalMap;
 	import view.unit.Walker;
@@ -30,16 +30,16 @@ package view.screen
 		
 		private function init():void
 		{
-			initMapLayer();
-			initUnitViewLayer();
+			initMap();
+			initUnitView();
 		}
 		
-		private function initMapLayer():void
+		private function initMap():void
 		{
 			bg = AssetsManager.instance().getResByName("background") as Sprite;
 			this.addChild( bg );
-			bg.addEventListener(MouseEvent.CLICK, onClick);
-			tileMap = new LogicalMap();
+			
+			tileMap = LogicalMap.getInstance();
 			this.addChild( tileMap );
 //			tileMap.visible = false;
 			tileMap.mouseEnabled = tileMap.mouseChildren = false;
@@ -47,36 +47,45 @@ package view.screen
 		
 		private var container:Sprite;
 		private var role:Walker;
-		private function initUnitViewLayer():void
+		private function initUnitView():void
 		{
 			container = new Sprite();
 			this.addChild( container );
-			
-			//货架
-			shelfManager = new ShelfManager();
-			shelfManager.creatShelf(container, tileMap);
-			
-//			role = new Walker();
-//			container.addChild( role );
-//			role.setCrtTile( tileMap.getTileByPosition(new Point(3,4)) );
+			//初始化仓库
+			store = StoreManager.getInstance();
+			//货架管理器
+			shelfManager = ShelfManager.getInstance();
+			shelfManager.creatShelf(container);
+			//雇员管理器
+			workerManager = WorkerManager.getInstance();
+			workerManager.creatWorker(container);
+			//顾客管理器
+			shopperManager = ShopperManager.getInstance();
+			shopperManager.setContainer(container);
 		}
 		
+		private var store:StoreManager;
 		private var shelfManager:ShelfManager;
 		private var workerManager:WorkerManager;
 		private var shopperManager:ShopperManager;
 		
-		private var mouse:Point;
-		protected function onClick(event:MouseEvent):void
+		private var state:Boolean = false;
+		/**
+		 * true:	开店营业， false:	筹备
+		 * 切换状态
+		 */		
+		public function changeState(boo:Boolean):void
 		{
-			return;
-			mouse = new Point(stage.mouseX, stage.mouseY);
-			if(!tileMap.hitTestPoint(mouse.x, mouse.y, true))		//点击为行走区域外
+			if(state == boo)
 				return;
-			var target:ItemTile = tileMap.getTileByMousePlace(mouse);
-			if(target)
-				tileMap.moveBody(role, target);
+			if(state)
+			{
+				
+			}
+			else
+			{
+				
+			}
 		}
-		
-		
 	}
 }

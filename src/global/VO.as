@@ -16,5 +16,6 @@ package global
 		
 		public var sampleXML:XML;
 		public var mapXML:XML;
+		public var propXML:XML;
 	}
 }

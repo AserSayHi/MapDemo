@@ -49,7 +49,6 @@ package global
 		
 		public function closeScreen(index:int):void
 		{
-			
 		}
 		
 		private var screen:MainScreen;
@@ -60,8 +59,9 @@ package global
 			main.addChild( screen );
 		}
 		
-		public function teseIsOpend(index:int):void
+		public function teseIsOpend(index:int):Boolean
 		{
+			return false;
 		}
 	}
 }

@@ -164,5 +164,13 @@ package view.component
 			var p:Point = new Point(Math.round(tx), Math.round(ty));
 			return map.getTileAt(p) as ItemTile;
 		}
+		
+		private static var _instance:LogicalMap;
+		public static function getInstance():LogicalMap
+		{
+			if(!_instance)
+				_instance = new LogicalMap();
+			return _instance;
+		}
 	}
 }
