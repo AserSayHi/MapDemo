@@ -21,7 +21,13 @@ package
 		}
 		private function init():void
 		{
+			initData();
 			loadAssets();
+		}
+		
+		private function initData():void
+		{
+			
 		}
 		
 		private function loadAssets():void

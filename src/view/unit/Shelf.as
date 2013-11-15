@@ -67,7 +67,7 @@ package view.unit
 		
 		/**
 		 * 摆放物品
-		 * @param place		货架索引，从上至下依次为0,1,2
+		 * @param place		货架层次，从上至下依次为0,1,2
 		 * @param propId	物品id
 		 * @param num		物品数量
 		 */		

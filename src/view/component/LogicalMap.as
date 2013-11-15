@@ -10,7 +10,7 @@ package view.component
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
-	import global.VO;
+	import global.DC;
 	
 	import view.unit.Walker;
 
@@ -82,7 +82,7 @@ package view.component
 		private function parseMapXml():void
 		{
 			//解析地图通行数据
-			var source:String = VO.instance().mapXML.tiles.toString();
+			var source:String = DC.instance().mapXML.tiles.toString();
 			const max:uint = source.length;
 			var char:String;
 			var arr:Array = [];

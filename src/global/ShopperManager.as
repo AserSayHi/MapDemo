@@ -5,6 +5,8 @@ package global
 	import flash.events.EventDispatcher;
 	import flash.geom.Point;
 	
+	import model.ShopperVO;
+	
 	import view.component.LogicalMap;
 	import view.unit.Shopper;
 
@@ -36,9 +38,10 @@ package global
 		
 		private function creatShopper(e:Event):void
 		{
-			var shopper:Shopper = new Shopper();
-			container.addChild( shopper );
+			var vo:ShopperVO = new ShopperVO(0, [[101, 5], [102, 5]]);
+			var shopper:Shopper = new Shopper(vo);
 			shopper.setCrtTile( map.getTileByPosition(new Point(3,4)) );
+			container.addChild( shopper );
 		}
 		
 		private var container:Sprite;

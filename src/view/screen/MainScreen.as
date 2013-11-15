@@ -3,6 +3,7 @@ package view.screen
 	import flash.display.Sprite;
 	
 	import global.AssetsManager;
+	import global.PlansManager;
 	import global.ShelfManager;
 	import global.ShopperManager;
 	import global.StoreManager;
@@ -17,7 +18,6 @@ package view.screen
 	 */	
 	public class MainScreen extends Sprite
 	{
-		private var bg:Sprite;
 		public function MainScreen()
 		{
 			init();
@@ -31,9 +31,11 @@ package view.screen
 		private function init():void
 		{
 			initMap();
-			initUnitView();
+			
+			initManager();
 		}
 		
+		private var bg:Sprite;
 		private function initMap():void
 		{
 			bg = AssetsManager.instance().getResByName("background") as Sprite;
@@ -47,12 +49,15 @@ package view.screen
 		
 		private var container:Sprite;
 		private var role:Walker;
-		private function initUnitView():void
+		private function initManager():void
 		{
-			container = new Sprite();
-			this.addChild( container );
 			//初始化仓库
 			store = StoreManager.getInstance();
+			//销售方案管理
+			plansManager = PlansManager.getInstance();
+			
+			container = new Sprite();
+			this.addChild( container );
 			//货架管理器
 			shelfManager = ShelfManager.getInstance();
 			shelfManager.creatShelf(container);
@@ -65,6 +70,7 @@ package view.screen
 		}
 		
 		private var store:StoreManager;
+		private var plansManager:PlansManager;
 		private var shelfManager:ShelfManager;
 		private var workerManager:WorkerManager;
 		private var shopperManager:ShopperManager;

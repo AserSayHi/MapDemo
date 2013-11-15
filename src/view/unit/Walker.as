@@ -32,7 +32,7 @@ package view.unit
 		
 		public function Walker()
 		{
-			super();
+			init();
 		}
 		
 		override protected function init():void
@@ -40,6 +40,7 @@ package view.unit
 			action = AssetsManager.instance().getResByName("role") as MovieClip;
 			action.gotoAndStop(ACTION_STAY_RIGHT);
 			this.addChild( action );
+			this.mouseChildren = this.mouseEnabled = false;
 		}
 		
 		private var vx:int;

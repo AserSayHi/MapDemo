@@ -26,7 +26,7 @@ package global
 		private var datas:Vector.<ShelfVO>;
 		private function parseXML():void
 		{
-			var xml:XMLList = VO.instance().mapXML.shelf;
+			var xml:XMLList = DC.instance().mapXML.shelf;
 			datas = new Vector.<ShelfVO>();
 			for(var i:int = 1;i<int.MAX_VALUE;i++)
 			{

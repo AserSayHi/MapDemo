@@ -73,9 +73,9 @@ package global
 		
 		public function parse():void
 		{
-			VO.instance().mapXML = new XML( zipArchive.getFileByName("map.xml").data );
-			VO.instance().sampleXML = new XML( zipArchive.getFileByName("sample.xml").data );
-			VO.instance().propXML = new XML( zipArchive.getFileByName("prop.xml").data );
+			DC.instance().mapXML = new XML( zipArchive.getFileByName("map.xml").data );
+			DC.instance().sampleXML = new XML( zipArchive.getFileByName("sample.xml").data );
+			DC.instance().propXML = new XML( zipArchive.getFileByName("prop.xml").data );
 		}
 		
 		public function getResByName(name:String):DisplayObject
